@@ -1,0 +1,5 @@
+prefixes:
+  mcp342x: ..
+packages:
+  ..:
+    path: ..
