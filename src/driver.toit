@@ -10,6 +10,11 @@ RESOLUTION_14_BITS ::= 0b01
 RESOLUTION_16_BITS ::= 0b10
 RESOLUTION_18_BITS ::= 0b11
 
+GAIN_AMPLIFIER_1 ::= 0b00
+GAIN_AMPLIFIER_2 ::= 0b01
+GAIN_AMPLIFIER_4 ::= 0b10
+GAIN_AMPLIFIER_8 ::= 0b11
+
 /**
 Driver for the MCP342x ADC device.
 */
@@ -21,6 +26,7 @@ class Driver:
 
   resolution_/int := RESOLUTION_12_BITS
   continous_/bool := false
+  gain_/int       := GAIN_AMPLIFIER_1
 
   constructor .device_/serial.Device:
 
@@ -43,8 +49,12 @@ class Driver:
     The default mode is one-shot where the device is passive until
     $read is invoked.
   */
-  configure --resolution/int=RESOLUTION_12_BITS --continous=false:
+  configure
+      --resolution/int=RESOLUTION_12_BITS
+      --gain=GAIN_AMPLIFIER_1
+      --continous=false:
     resolution_ = resolution
+    gain_ = gain
     continous_ = continous
     apply_config_
 
@@ -67,10 +77,15 @@ class Driver:
 
       value := binary.BIG_ENDIAN.int24 raw 0
       if count < 4: value >>= 8
-      return value / (1000 << resolution_ * 2).to_float
+      result := value.to_float / (1000 << (resolution_ * 2))
+      // Apply gain after to-float conversion, so we have more bits and
+      // don't loose precision.
+      result /= 1 << gain_
+      return result
 
   apply_config_ --ready=false:
-    cfg := resolution_ << 2
+    cfg := gain_
+    cfg |= resolution_ << 2
     if ready: cfg |= CFG_RDY_
     if continous_: cfg |= CFG_OC_
     device_.write
