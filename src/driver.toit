@@ -77,7 +77,7 @@ class Driver:
 
       value := binary.BIG_ENDIAN.int24 raw 0
       if count < 4: value >>= 8
-      result := value / (1000 << resolution_ * 2).to_float
+      result := value.to_float / (1000 << (resolution_ * 2))
       // Apply gain after to-float conversion, so we have more bits and
       // don't loose precision.
       result /= 1 << gain_
