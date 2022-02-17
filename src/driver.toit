@@ -1,7 +1,7 @@
 // Copyright (C) 2021 Toitware ApS. All rights reserved.
 
 import binary
-import serial.device
+import serial.device as serial
 
 I2C_ADDRESS ::= 0b1101000
 
