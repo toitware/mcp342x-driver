@@ -3,7 +3,7 @@
 // be found in the EXAMPLES_LICENSE file.
 
 import gpio
-import serial.protocols.i2c as i2c
+import i2c
 import mcp342x
 
 main:
