@@ -1,2 +1,5 @@
 name: mcp342x
 description: Driver for MCP342x ADC devices.
+
+environment:
+  sdk: ^2.0.0-alpha.144

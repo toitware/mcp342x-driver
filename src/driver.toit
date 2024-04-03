@@ -1,6 +1,6 @@
 // Copyright (C) 2021 Toitware ApS. All rights reserved.
 
-import binary
+import io
 import serial.device as serial
 
 I2C_ADDRESS ::= 0b1101000
@@ -75,7 +75,7 @@ class Driver:
         sleep --ms=resolution_ << (resolution_ + 1)
         continue
 
-      value := binary.BIG_ENDIAN.int24 raw 0
+      value := io.BIG_ENDIAN.int24 raw 0
       if count < 4: value >>= 8
       result := value.to_float / (1000 << (resolution_ * 2))
       // Apply gain after to-float conversion, so we have more bits and
