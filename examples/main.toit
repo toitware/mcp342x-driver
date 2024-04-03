@@ -11,15 +11,15 @@ main:
   scl := gpio.Pin 22
   bus := i2c.Bus --sda=sda --scl=scl
 
-  device := bus.device mcp342x.I2C_ADDRESS
+  device := bus.device mcp342x.I2C-ADDRESS
 
   adc := mcp342x.Driver device
 
   adc.on
 
   adc.configure
-    --resolution=mcp342x.RESOLUTION_18_BITS
-    --gain=mcp342x.GAIN_AMPLIFIER_1
+    --resolution=mcp342x.RESOLUTION-18-BITS
+    --gain=mcp342x.GAIN-AMPLIFIER-1
 
   10.repeat:
     print adc.read
